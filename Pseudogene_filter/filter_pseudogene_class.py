@@ -19,6 +19,7 @@ class FilterPseudoGeneParams():
 
     output_path = './output/'
     save_data = False
+    save_fasta = False
 
 class FilterPseudoGene():
     def __init__(self, params: dataclass):
@@ -30,10 +31,13 @@ class FilterPseudoGene():
         # Read in domain reference dataframe 
         self.domain_df = pd.read_csv(os.path.join(self.params.data_path, 
                                                   self.params.domain_file))
+        print(f"Domain file read: {self.params.domain_file}")
         
         # Read in fasta file to be queried into dataframe
         self.query_df = self.read_fasta(os.path.join(self.params.data_path, 
                                                      self.params.query_file))
+        print(f"Query file read: {self.params.query_file}")
+
         # Exrtact the Human sequence as reference from query_df 
         self.human_seq = self.query_df[self.query_df['name'].str.contains('Human')].sequence[0]
         self.domain_df = self.get_domain_info(self.domain_df, 
@@ -64,8 +68,20 @@ class FilterPseudoGene():
         
         
         if self.params.save_data:
-            self.query_df.to_csv(f"{os.path.join(self.params.output_path, self.params.query_file.split('.fasta')[0])}_filtered.fasta", 
+            # Save entire query_df to csv 
+            file_save_path = os.path.join(self.params.output_path, self.params.query_file.split('.fasta')[0])+'_filtered.csv'
+            print(f"Saving query df as csv: {file_save_path}")
+            self.query_df.to_csv(file_save_path, 
                                  index=0)
+        if self.params.save_fasta:
+            file_save_path = os.path.join(self.params.output_path, self.params.query_file.split('.fasta')[0])+'_filtered.fasta'
+            print(f"Saving filtered query fasta: {file_save_path}")
+            # Saving non-mismatched sequence to fasta
+            with open(file_save_path, 'w') as file:
+                for _, row in self.query_df.iterrows():
+                    if not row['mismatch']:
+                        file.write(f">{row['name']}\n")
+                        file.write(f"{row['sequence']}\n")
                         
     
     
