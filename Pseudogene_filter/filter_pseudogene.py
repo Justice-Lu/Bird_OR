@@ -32,8 +32,8 @@ filter_params = FilterPseudoGeneParams()
 filter_params.save_data = args.save_data 
 filter_params.save_fasta = args.save_fasta
 filter_params.output_path = args.output_path
-filter_params.query_file = os.path.basename(args.query_file_path)
-filter_params.domain_file = os.path.basename(args.domain_file_path)
+filter_params.query_file = args.query_file_path
+filter_params.domain_file = args.domain_file_path
 
 
 # instantiate class and run filter_genes 

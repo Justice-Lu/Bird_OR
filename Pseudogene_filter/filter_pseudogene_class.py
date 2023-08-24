@@ -8,7 +8,7 @@ from dataclasses import dataclass
 @dataclass 
 class FilterPseudoGeneParams():
     
-    data_path = './data/'
+    # data_path = './data/'
     query_file = None
     human_seq = None
     domain_file = 'HumanORTMD.txt' 
@@ -29,14 +29,12 @@ class FilterPseudoGene():
     def filter_genes(self):
         
         # Read in domain reference dataframe 
-        self.domain_df = pd.read_csv(os.path.join(self.params.data_path, 
-                                                  self.params.domain_file))
-        print(f"Domain file read: {self.params.domain_file}")
+        self.domain_df = pd.read_csv(self.params.domain_file)
+        print(f"Domain file : {self.params.domain_file}")
         
         # Read in fasta file to be queried into dataframe
-        self.query_df = self.read_fasta(os.path.join(self.params.data_path, 
-                                                     self.params.query_file))
-        print(f"Query file read: {self.params.query_file}")
+        self.query_df = self.read_fasta(self.params.query_file)
+        print(f"Query file : {self.params.query_file}")
 
         # Exrtact the Human sequence as reference from query_df 
         self.human_seq = self.query_df[self.query_df['name'].str.contains('Human')].sequence[0]
@@ -69,12 +67,12 @@ class FilterPseudoGene():
         
         if self.params.save_data:
             # Save entire query_df to csv 
-            file_save_path = os.path.join(self.params.output_path, self.params.query_file.split('.fasta')[0])+'_filtered.csv'
+            file_save_path = os.path.join(self.params.output_path, os.path.basename(self.params.query_file).split('.fasta')[0])+'_filtered.csv'
             print(f"Saving query df as csv: {file_save_path}")
             self.query_df.to_csv(file_save_path, 
                                  index=0)
         if self.params.save_fasta:
-            file_save_path = os.path.join(self.params.output_path, self.params.query_file.split('.fasta')[0])+'_filtered.fasta'
+            file_save_path = os.path.join(self.params.output_path, os.path.basename(self.params.query_file).split('.fasta')[0])+'_filtered.fasta'
             print(f"Saving filtered query fasta: {file_save_path}")
             # Saving non-mismatched sequence to fasta
             with open(file_save_path, 'w') as file:
