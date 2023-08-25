@@ -15,3 +15,11 @@ python filter_pseudogene.py \
 --query_file_path ./pathtofile/MyQuery.fasta \
 --domain_file_path ./pathtofile/DomainReference.txt \
 ```
+
+
+
+# TODO 
+- CORP score for pseudogene (https://genome.weizmann.ac.il/horde/CORP/)
+- Check if the common AA is presered 
+- Domain_reference - get domain from alphafold 
+- MSA alignment ? 
