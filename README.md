@@ -50,6 +50,7 @@ bedtools intersect -v -a {HEAD.bed} -b {TAIL.bed}
 Step 4b: Convert bed file to fasta. Input: bed file. Output: fasta file
 ```bash
 bedtools getfasta -s -name -bed {species}_control_ORs_OG.cleanedByEvalue.LengthFilterOnly.Pruned.scaff.0based.start.minus300.stop.plus300.name.eval.strand.bed -fi {NCBI genome} -fo step_2_results.olfacUniqueBlastHits.stranded.fasta
+```
 
 Step 5: determine ORFs. 
 ```bash
