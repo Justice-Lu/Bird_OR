@@ -1,3 +1,9 @@
 
 # Files to ignore when committing for github
 __pycache__
+.DS_Store
+
+# Directories to ignore 
+Misc
+output
+
